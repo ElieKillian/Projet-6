@@ -41,27 +41,27 @@ async function generateProjectFilter(projectId){
 
     // générer la page en filtrant les éléments :
 
-    let projetsfiltres = projects.filter(function(element){
+    let projectsFilter = projects.filter(function(element){
         if (element.categoryId === categoryId){
             return true;            
         }
     })
 
-    console.log("projetsfiltres =", projetsfiltres);
+    console.log("projectsFilter =", projectsFilter);
 
     // boucle pour générer la page en utilisant la variable de tri :
 
-    for (let i=0; i < projetsfiltres.length ;i++){
+    for (let i=0; i < projectsFilter.length ;i++){
         const gallery = document.querySelector(".gallery");
         const spaceProject = document.createElement("figure");
         gallery.appendChild(spaceProject);
 
         const imageProject = document.createElement("img");
-        imageProject.src = projetsfiltres[i].imageUrl;
+        imageProject.src = projectsFilter[i].imageUrl;
         spaceProject.appendChild(imageProject);
 
         const titleProject = document.createElement("figcaption");
-        titleProject.innerHTML = projetsfiltres[i].title;
+        titleProject.innerHTML = projectsFilter[i].title;
         spaceProject.appendChild(titleProject);
     }
 }
@@ -101,8 +101,3 @@ for (i=0; i < categorie.length; i++){
 };
 
 genererbouttons();
-
-// setTimeout(()=> {
-//     console.log("btn1 :",document.getElementById("btn1"));
-//  }
-//  ,3000);
