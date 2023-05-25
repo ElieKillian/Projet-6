@@ -156,13 +156,16 @@ li:hover {
 	width: 100%;
 
 }
-#contact, #login {
+#contact{
 	width: 50%;
-margin: auto;
+	margin: auto;
+}
+#login{
+	width: 50%;
+	margin : 150px auto 355px auto;
 }
 #contact > *, #login > * {
 	text-align: center;
-
 }
 #contact h2, #login h2{
 	margin-bottom: 20px;
@@ -202,6 +205,12 @@ input[type="submit"]{
 .passwordforget{
 	display: flex;
 	justify-content: center;
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 16px;
+	text-decoration-line: underline;
 }
 
 footer nav ul {

@@ -1,3 +1,7 @@
+// Page d'accueil - Présentation des projets
+
+if (document.getElementById("index")){
+
 async function generateAllProjects() {
 
     const reponse = await fetch ("http://localhost:5678/api/works"); 
@@ -101,3 +105,63 @@ for (i=0; i < categorie.length; i++){
 };
 
 genererbouttons();
+
+}
+
+// Page identification
+
+else if (document.getElementById("login_page")){
+
+// blocage de l'action du formulaire et exécution de la fonction qui lui sera associée
+
+document.getElementById('form_login').addEventListener('submit', function(event) {
+    event.preventDefault();
+    login();
+});
+
+// fonction associée au formulaire
+
+async function login(){
+
+    // variable utilisant les données rentrées par l'utilisateur
+
+    let user ={
+        "email" : document.getElementById("email").value,
+        "password" : document.getElementById("pass").value
+    };
+
+    console.log("user:",user);
+
+    // envoi des données vers le backend
+
+    let response = await fetch('http://localhost:5678/api/users/login', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(user)
+    });
+
+    console.log("response:",response);
+
+    // stockage des données renvoyées par le backend
+        
+    let result = await response.json();
+
+    console.log("result:",result)
+
+    // communication des résultats à l'utilisateur
+    // stockage du token et redirection si connexion réussie
+
+    if (result.error) {alert('Saisie invalide')};
+    if (result.message) {alert ('Utilisateur non trouvé')};
+    if (result.userId) {
+        alert ('Connexion réalisée avec succès, vous allez être redirigé vers la page d\'accueil');
+
+        localStorage.setItem(result.id, result.token);
+        console.log(result.id);
+        console.log(result.token);
+
+        document.location.href="http://127.0.0.1:5500/FrontEnd/index.html"; 
+    };
+
+};
+}

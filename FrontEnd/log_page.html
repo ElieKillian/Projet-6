@@ -13,7 +13,7 @@
     <meta name="description" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
   </head>
-  <body>
+  <body id="login_page">
     <header>
       <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
       <nav>
@@ -28,14 +28,18 @@
 
     <section id="login">
       <h2>Log in</h2>
-      <form action="#" method="post">
+      <form
+        id="form_login"
+        action="http://localhost:5678/api/users/login"
+        method="POST"
+      >
         <label for="email">Email</label>
         <input type="email" name="email" id="email" />
         <label for="pass">Mot de passe</label>
         <input type="password" name="password" id="pass" />
         <input type="submit" value="Se connecter" />
       </form>
-      <a class="passwordforget">Mot de passe oublié ?</a>
+      <a href="#" class="passwordforget">Mot de passe oublié ?</a>
     </section>
 
     <footer>
