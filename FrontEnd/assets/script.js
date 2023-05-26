@@ -106,6 +106,44 @@ for (i=0; i < categorie.length; i++){
 
 genererbouttons();
 
+// Présence d'un token de connexion ?
+
+let token = localStorage.getItem('token');
+console.log(token);
+
+// Génération du bouton Login dans le menu si pas de token
+
+if(token === null){
+    const listLogin = document.querySelector(".login_element");
+    const linkLogin = document.createElement("a");
+    linkLogin.innerHTML = 'Login';
+    listLogin.appendChild(linkLogin);
+
+    // Accès à la page de connexion
+
+    linkLogin.addEventListener('click',function(){
+    document.location.href="http://127.0.0.1:5500/FrontEnd/log_page.html"; 
+    });
+}
+
+// Génération du bouton Logout dans le menu si présence token
+
+if(token !== null){
+    // changer l'élément login en haut de page
+
+    const listLogout = document.querySelector(".login_element");
+    listLogout.innerHTML = '';
+    const linkLogout = document.createElement("a");
+    linkLogout.innerHTML = 'Logout';
+    listLogout.appendChild(linkLogout);
+
+    // Déconnexion en cas d'appui sur le bouton, suppression du token
+
+    linkLogout.addEventListener('click',function(){
+    localStorage.removeItem('token');
+    document.location.href="http://127.0.0.1:5500/FrontEnd/index.html"; 
+    });
+}
 }
 
 // Page identification
@@ -155,11 +193,7 @@ async function login(){
     if (result.message) {alert ('Utilisateur non trouvé')};
     if (result.userId) {
         alert ('Connexion réalisée avec succès, vous allez être redirigé vers la page d\'accueil');
-
-        localStorage.setItem(result.id, result.token);
-        console.log(result.id);
-        console.log(result.token);
-
+        localStorage.setItem('token', result.token);
         document.location.href="http://127.0.0.1:5500/FrontEnd/index.html"; 
     };
 
