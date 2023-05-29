@@ -219,3 +219,53 @@ footer nav ul {
 	margin: 2em
 }
 
+/** Barre édition **/
+
+.edit_bar{
+	background: black;
+	height: 60px;
+}
+
+.title_bar{
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	gap: 15px;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 19px;
+}
+
+.publishbutton{
+	border-radius: 60px;
+	padding : 10px 35px;
+}
+
+/** Boutons modifier **/
+
+.modify_figure{
+	display: flex;
+	align-items: center;
+	margin : 15px 57px;
+	gap: 15px;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 19px;
+}
+
+.header_projects{
+position: relative;
+}
+
+.modify_projects{
+	position: absolute;
+	display: flex;
+	top : 8px;
+	left : 700px;
+	gap: 15px;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 19px;
+}
