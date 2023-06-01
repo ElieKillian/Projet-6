@@ -202,6 +202,10 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
+.error_email, .error_pass{
+	color :red;
+}
+
 .passwordforget{
 	display: flex;
 	justify-content: center;
@@ -245,7 +249,7 @@ footer nav ul {
 
 /** Boutons modifier **/
 
-.modify_figure{
+#modify_figure{
 	display: flex;
 	align-items: center;
 	margin : 15px 57px;
@@ -253,13 +257,15 @@ footer nav ul {
 	font-weight: 400;
 	font-size: 16px;
 	line-height: 19px;
+	cursor: pointer;
 }
-
+#introduction .fa-pen-to-square{
+	margin-bottom: 0.5em;
+}
 .header_projects{
 position: relative;
 }
-
-.modify_projects{
+#modify_projects{
 	position: absolute;
 	display: flex;
 	top : 8px;
@@ -268,4 +274,134 @@ position: relative;
 	font-weight: 400;
 	font-size: 16px;
 	line-height: 19px;
+	cursor: pointer;
+}
+
+/** Modale **/
+
+.back_modale{
+	position: fixed;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0,0,0,0.3);
+}
+
+.modale{
+	position: relative;
+	z-index: 2;
+	width: 630px;
+	height: 730px;
+	background: #FFFFFF;
+	border-radius: 10px;
+}
+
+.fa-xmark{
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	top : 32px;
+	right : 35px;
+	cursor: pointer;
+}
+
+h3{
+	margin-top: 60px;
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 26px;
+	line-height: 30px;
+	text-align: center;
+	color: #000000;
+}
+.modale_gallery{
+	margin: 46px 105px;
+	gap : 7px;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+.figure_edit{
+	position: relative;
+}
+.image_modale{
+	position: relative;
+	z-index: 2;
+	width: 78px;
+	height: 104px;
+}
+.trash{
+	position: absolute;
+	z-index: 3;
+	top : 5%;
+	right : 10%;
+	width: 17px;
+	height: 17px;
+	background: #000000;
+	cursor: pointer;
+	border-radius: 2px;
+}
+.fa-trash-can{
+	position: absolute;
+	font-size: 10px;
+	top: 20%;
+	right : 25%;
+	align-items: center;
+	color: #FFFFFF;
+}
+.arrows{
+	display: none;
+}
+.figure_edit:hover .arrows{
+	display: initial;
+	position: absolute;
+	z-index: 3;
+	top : 5%;
+	right : 35%;
+	width: 17px;
+	height: 17px;
+	background: #000000;
+	cursor: pointer;
+	border-radius: 2px;
+}
+.fa-arrows-up-down-left-right{
+	position: absolute;
+	font-size: 10px;
+	top: 20%;
+	right : 25%;
+	align-items: center;
+	color: #FFFFFF;
+}
+.edit{
+	cursor: pointer;
+	width: 50%;
+}
+.line{
+	border : 1px solid #B3B3B3;
+	margin : 0px 105px;
+}
+.add_photo{
+	margin : 38px 196.5px 23px;
+	width: 237px;
+	height: 36px;
+	color: #FFFFFF;
+	background: #1D6154;
+	border-radius: 60px;
+	cursor: pointer;
+}
+.remove_gallery p{
+	margin : 0px 200px;
+	width: 230px;
+	height: 17px;
+	text-align: center;
+	color : #D65353;
+}
+.remove_gallery{
+	text-decoration: none;
 }

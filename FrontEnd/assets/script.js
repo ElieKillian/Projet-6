@@ -178,13 +178,14 @@ if(token !== null){
     editbar();
 
     // Ajout des boutons modifier 
+    // PREVOIR UN PARAMETRE POUR CETTE FONCTION !!!!
 
     function addModifyButton(){
 
         // bouton pour le portrait
         const selectFigure = document.querySelector("figure");
         const editFigure = document.createElement("div");
-        editFigure.classList.add("modify_figure");
+        editFigure.setAttribute("id","modify_figure");
         editFigure.innerHTML = 
         '<i class="fa-regular fa-pen-to-square"></i>' +
         '<p>modifier</p>';
@@ -199,13 +200,77 @@ if(token !== null){
         selectProject.appendChild(editProject);
         selectProject.insertBefore(editProject, selectProject.firstChild);
         editProject.innerHTML = '<h2>Mes projets</h2>' 
-        + '<div class=modify_projects>' 
+        + '<div id=modify_projects>' 
         + '<i class="fa-regular fa-pen-to-square"></i>' 
         + '<p>modifier</p>'
         + '</div>'; 
     }
 
     addModifyButton();
+
+    // ajout de la modale
+
+    document.getElementById("modify_projects").addEventListener('click', async function modale(){
+    
+        // définition des variables
+        const targetIndex = document.getElementById("index");
+        const clickOnModale = document.getElementsByClassName("modify_projects");
+
+        // création d'un fond pour la modale
+        const createBackModale = document.createElement("div");
+        createBackModale.classList.add("back_modale");
+        targetIndex.appendChild(createBackModale);
+
+        // création de la modale
+        const createModale = document.createElement("div");
+        createModale.classList.add("modale");
+        createBackModale.appendChild(createModale);
+
+        // contenu de la modale
+        createModale.innerHTML = 
+        '<i class="fa-solid fa-xmark"></i>' +
+        '<h3>Galerie photo</h3>' +
+        '<div class="modale_gallery">' + '</div>' +
+        '<div class="line">' + '</div>' +
+        '<button class="add_photo">' + '<p>Ajouter une photo</p>' + '</button>' +
+        '<a href="#" class=remove_gallery>' + '<p>Supprimer la galerie</p>' + '</a>';
+
+        // génération des projets dans la modale 
+ 
+        async function GalleryInModale(){
+            const reponse = await fetch ("http://localhost:5678/api/works"); 
+            const project = await reponse.json();  
+        
+            for (let i=0; i < project.length ;i++){
+                const modaleGallery = document.querySelector(".modale_gallery");
+                const spaceProject = document.createElement("figure");
+                spaceProject.classList.add("figure_edit");
+                modaleGallery.appendChild(spaceProject);
+        
+                const imageProject = document.createElement("img");
+                imageProject.classList.add("image_modale");
+                imageProject.src = project[i].imageUrl;
+                spaceProject.appendChild(imageProject);
+
+                const trash = document.createElement("div");
+                trash.classList.add("trash");
+                trash.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+                spaceProject.appendChild(trash);
+
+                const arrows = document.createElement("div");
+                arrows.classList.add("arrows");
+                arrows.innerHTML = ' <i class="fa-solid fa-arrows-up-down-left-right"></i>';
+                spaceProject.appendChild(arrows);
+        
+                const titleProject = document.createElement("figcaption");;
+                titleProject.innerHTML = '<p class="edit">éditer</p>';
+                spaceProject.appendChild(titleProject);
+            };
+        }
+
+        GalleryInModale();
+
+    })
 
 }
 }
@@ -214,16 +279,8 @@ if(token !== null){
 
 else if (document.getElementById("login_page")){
 
-// blocage de l'action du formulaire et exécution de la fonction qui lui sera associée
-
-document.getElementById('form_login').addEventListener('submit', function(event) {
-    event.preventDefault();
-    login();
-});
-
-// fonction associée au formulaire
-
-async function login(){
+document.getElementById('form_login').addEventListener('submit', async function(event) {
+        event.preventDefault();
 
     // variable utilisant les données rentrées par l'utilisateur
 
@@ -253,13 +310,33 @@ async function login(){
     // communication des résultats à l'utilisateur
     // stockage du token et redirection si connexion réussie
 
-    if (result.error) {alert('Saisie invalide')};
-    if (result.message) {alert ('Utilisateur non trouvé')};
+    const errorMain = document.getElementById("form_login");
+
+    if (result.error) {
+        //alert('Saisie invalide');
+        const resultError = document.getElementById("pass");
+        resultError.style.border = "2px solid red";
+        const errorPass = document.createElement("p");
+        errorPass.classList.add("error_pass");
+        errorPass.innerHTML = 'Mot de passe invalide !';
+        errorMain.appendChild(errorPass);
+        errorMain.insertBefore(errorPass, resultError);
+        };
+    if (result.message) {
+        //alert ('Utilisateur non trouvé');
+        const resultMessage = document.getElementById("email");
+        resultMessage.style.border = "2px solid red";
+        const errorMail = document.createElement("p");
+        errorMail.classList.add("error_email");
+        errorMail.innerHTML = 'Email invalide !';
+        errorMain.appendChild(errorMail);
+        errorMain.insertBefore(errorMail, resultMessage);
+        };
     if (result.userId) {
-        alert ('Connexion réalisée avec succès, vous allez être redirigé vers la page d\'accueil');
+        //alert ('Connexion réalisée avec succès, vous allez être redirigé vers la page d\'accueil');
         localStorage.setItem('token', result.token);
         document.location.href="http://127.0.0.1:5500/FrontEnd/index.html"; 
     };
+});
 
-};
 }
