@@ -232,10 +232,10 @@ if(token !== null){
         '<h3>Galerie photo</h3>' +
         '<div class="modale_gallery">' + '</div>' +
         '<div class="line">' + '</div>' +
-        '<button class="add_photo">' + '<p>Ajouter une photo</p>' + '</button>' +
+        '<button class="add_picture">' + '<p>Ajouter une photo</p>' + '</button>' +
         '<a href="#" class=remove_gallery>' + '<p>Supprimer la galerie</p>' + '</a>';
 
-        // génération des projets dans la modale 
+        // génération des projets dans la modale  et suppression de projets
  
         async function GalleryInModale(){
             const reponse = await fetch ("http://localhost:5678/api/works"); 
@@ -253,9 +253,11 @@ if(token !== null){
                 spaceProject.appendChild(imageProject);
 
                 const trash = document.createElement("div");
-                trash.classList.add("trash");
+                trash.classList.add("trash","trashproject" + project[i].id);
                 trash.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
                 spaceProject.appendChild(trash);
+
+                console.log("trash :",trash);
 
                 const arrows = document.createElement("div");
                 arrows.classList.add("arrows");
@@ -265,10 +267,159 @@ if(token !== null){
                 const titleProject = document.createElement("figcaption");;
                 titleProject.innerHTML = '<p class="edit">éditer</p>';
                 spaceProject.appendChild(titleProject);
+
+                // Supprimer une photo
+
+                trash.addEventListener('click', async function (){
+
+                    let sendDelete = await fetch(`http://localhost:5678/api/works/${project[i].id}`, {
+                        method: 'DELETE',
+                        headers : {
+                            'Authorization' : `Bearer ${token}` 
+                        }
+                    });
+                        
+                    let result =  await sendDelete.json();    
+                    console.log("result :",result.message);
+                })
             };
         }
 
         GalleryInModale();
+
+        // configuration du bouton pour fermer la modale
+
+        const closeButton = document.querySelector('.fa-xmark');
+        closeButton.addEventListener('click', function(){
+            createBackModale.remove();
+        })
+        document.addEventListener("mouseup", function(event) {
+            if (!createModale.contains(event.target)) {
+                createBackModale.remove();
+            }
+        });
+
+        // Ajouter une photo
+
+        const addPicture = document.querySelector('.add_picture');
+        addPicture.addEventListener('click', async function picture(){
+
+            const selectModale = document.querySelector(".modale");
+            // entête section
+            selectModale.innerHTML=      
+            '<i class="fa-solid fa-arrow-left"></i>' +   
+            '<i class="fa-solid fa-xmark"></i>' +
+            '<h3>Ajout photo</h3>';
+
+            // espace import photos
+            const pictureBox = document.createElement("form");
+            pictureBox.classList.add("import_pictures")
+            selectModale.appendChild(pictureBox);
+            pictureBox.innerHTML=
+            '<div class="visualize_image">' +
+            '<i class="fa-regular fa-image"></i>' + 
+            '<label id="import_picture">' + 
+            '<input type="file" accept=".jpg, .png" size="4194304" />' +
+            '+ Ajouter photo' + '</label>' +
+            '<p class="limit_size">jpg, png : 4mo max</p>' + 
+            '</div>' +
+            '<label>Titre</label>' + '<input type="text" id="title_picture" />' + 
+            '<label>Catégorie</label>' + '<select id="category_picture"></select>' + 
+            '<div class="line"></div>' +
+            '<label for="submit_project">' + '<input id="submit_project" type="submit" value="Valider" action="#" />' + '</label>';
+
+            // définition de l'élément select 
+            async function select(){
+            const selectCategory = document.getElementById('category_picture');
+            
+            const reponse = await fetch ("http://localhost:5678/api/categories"); 
+            const categorie = await reponse.json(); 
+
+            for (let i=0; i < categorie.length; i++){
+                const createValue = document.createElement("option");
+                createValue.setAttribute("value", categorie[i].id);
+                selectCategory.appendChild(createValue);
+                createValue.innerHTML = categorie[i].name;
+            }
+            }
+
+            select();
+
+            //prévisualisation de l'image avant envoi
+            const inputImage = document.querySelector('input[type="file"]');
+            const preview = document.querySelector(".visualize_image");
+
+            let blob = null;
+
+            inputImage.addEventListener('change', function changepicture(){
+                const readFile = new FileReader();
+                preview.innerHTML='';
+
+                readFile.addEventListener('load', function load() {
+                        preview.style.backgroundImage = `url(${readFile.result})`;
+                        preview.style.margin = "0px 145px 30px";
+                        preview.style.width = "129px";
+                        preview.style.backgroundSize = "contain";
+                        preview.style.backgroundRepeat = "no-repeat";
+                    
+                        const fileType = inputImage.files[0].type;
+                        console.log("filetype :", fileType);
+
+                        const fileSize = inputImage.files[0].size;
+                        console.log("filesize :", fileSize);
+
+                        if((fileType === "image/png" && fileSize < 4194304) || (fileType === "image/jpeg" && fileSize < 4194304) || (fileType === "image/jpg" && fileSize < 4194304)){
+                        blob = new Blob([readFile.result], {type : fileType});
+                        console.log("blob :",blob);
+                        } else {
+                        alert("Type de fichier non valide");
+                        picture();
+                        }
+                });
+                readFile.readAsDataURL(inputImage.files[0]);
+            });
+
+
+            // envoi du nouveau projet
+            pictureBox.addEventListener('submit', async function send(event) {
+                event.preventDefault();
+              
+                let newProject = new FormData();
+                newProject.append("title", document.getElementById("title_picture").value);
+                newProject.append("image", blob);                
+                newProject.append("category", document.getElementById("category_picture").value);
+                console.log(document.getElementById("category_picture").value);
+                console.log("newProject :",newProject);
+
+                // envoi des données vers le backend
+
+                let sendData = await fetch('http://localhost:5678/api/works', {
+                    method: 'POST',
+                    body: newProject,
+                    headers : {
+                        'Authorization' : `Bearer ${token}` 
+                    }
+                });
+
+                console.log("sendData:",sendData);
+                
+                let result = await sendData.json();
+
+                console.log("result :",result.message);
+            });
+
+            // retour page édition
+            const backButton = document.querySelector('.fa-arrow-left');
+            backButton.addEventListener('click', function(){
+                modale();
+            })
+
+            // fermeture de la modale
+            const closeButton = document.querySelector('.fa-xmark');
+            closeButton.addEventListener('click', function(){
+                createBackModale.remove();
+            })
+        })
 
     })
 

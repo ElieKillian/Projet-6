@@ -297,11 +297,10 @@ position: relative;
 	position: relative;
 	z-index: 2;
 	width: 630px;
-	height: 730px;
+	/* height: 730px; */
 	background: #FFFFFF;
 	border-radius: 10px;
 }
-
 .fa-xmark{
 	position: absolute;
 	width: 12px;
@@ -310,7 +309,6 @@ position: relative;
 	right : 35px;
 	cursor: pointer;
 }
-
 h3{
 	margin-top: 60px;
 	font-family: 'Work Sans';
@@ -386,7 +384,7 @@ h3{
 	border : 1px solid #B3B3B3;
 	margin : 0px 105px;
 }
-.add_photo{
+.add_picture{
 	margin : 38px 196.5px 23px;
 	width: 237px;
 	height: 36px;
@@ -399,9 +397,89 @@ h3{
 	margin : 0px 200px;
 	width: 230px;
 	height: 17px;
+	margin-bottom: 48px;
 	text-align: center;
 	color : #D65353;
 }
 .remove_gallery{
 	text-decoration: none;
+}
+
+/* Fenêtre Ajout photos */
+.fa-arrow-left{
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	top : 32px;
+	left : 35px;
+	cursor: pointer;
+}
+.import_pictures{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin : 36px 105px 55px;
+}
+.visualize_image{
+	height: 169px;
+	margin-bottom: 30px;
+}
+.fa-image{
+	margin : 28px 180px 21px;
+	width: 58px;
+	height: 46px;
+	font-size: 52px;
+}
+input[type="file"] {
+    display: none;
+}
+#import_picture{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 173px;
+	height: 36px;
+	margin : 0px 123.5px;
+	background: #CBD6DC;
+	border-radius: 50px;
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 16px;
+	text-align: center;
+	color: #306685;
+}
+.limit_size{
+	margin-top: 7px;
+	margin-bottom: 49px;
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 10px;
+	line-height: 12px;
+	text-align: center;
+	color: #444444;
+}
+#title_picture{
+	margin : 10px 0px 21px;
+	height: 51px;
+}
+#category_picture{
+	margin : 10px 0px 47px;
+	height: 51px;
+}
+.import_pictures .line{
+	margin : 0px;
+}
+#submit_project{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #A7A7A7;
+	color: #FFFFFF;
+	margin : 32px 90px;
+	border-radius: 60px;
+	width: 237px;
+	height: 36px;
 }
