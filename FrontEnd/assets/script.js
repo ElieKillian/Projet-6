@@ -272,14 +272,14 @@ if(token !== null){
 
                 trash.addEventListener('click', async function (){
 
-                    let sendDelete = await fetch(`http://localhost:5678/api/works/${project[i].id}`, {
+                    let deleteProject = await fetch(`http://localhost:5678/api/works/${project[i].id}`, {
                         method: 'DELETE',
                         headers : {
                             'Authorization' : `Bearer ${token}` 
                         }
                     });
-                        
-                    let result =  await sendDelete.json();    
+                      
+                    let result =  await deleteProject.json();    
                     console.log("result :",result.message);
                 })
             };
@@ -349,7 +349,7 @@ if(token !== null){
             const inputImage = document.querySelector('input[type="file"]');
             const preview = document.querySelector(".visualize_image");
 
-            let blob = null;
+            let blob = '';
 
             inputImage.addEventListener('change', function changepicture(){
                 const readFile = new FileReader();
