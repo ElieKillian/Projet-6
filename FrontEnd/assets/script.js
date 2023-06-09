@@ -278,7 +278,13 @@ if(token !== null){
                             'Authorization' : `Bearer ${token}` 
                         }
                     });
+                    if (deleteProject.status === 200){
+                        spaceProject.remove();
+                    } else {
+                        console.error("erreur lors de la suppression du projet");
+                    }
                 })
+
             };
         }
 
