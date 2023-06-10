@@ -51,33 +51,44 @@ if(token === null){
         const categorie = await reponse.json(); 
     
         const buttons = document.querySelector(".buttons");
+        const allButtons = buttons.getElementsByTagName("button");
+
         const button = document.createElement("button");
         button.setAttribute("id", "btn");
         button.innerHTML = 'Tous';
         buttons.appendChild(button);
         
         document.getElementById("btn").addEventListener('click', function(){
-            console.log(0+ 'ok');
             document.querySelector(".gallery").innerHTML='';
             generateAllProjects();
+
+            for (let j = 0; j < allButtons.length; j++){
+                allButtons[j].style.background = 'none';
+                allButtons[j].style.color = '#1D6154';
+            }
+            button.style.background = "#1D6154";
+            button.style.color = "white";   
         });
     
-    for (i=0; i < categorie.length; i++){
-        const button = document.createElement("button");
-        button.setAttribute("id","btn" + categorie[i].id);
-        button.innerHTML = categorie[i].name;
-        buttons.appendChild(button);
-    
-        console.log("categorie :", categorie[i]);
-        console.log(document.getElementById("btn" + categorie[i].id));
-    
-        document.getElementById("btn" + categorie[i].id).addEventListener('click', function(event){
-            console.log("event:",event);
-            document.querySelector(".gallery").innerHTML='';
-            generateProjectFilter(event.target.id.slice(3));
-        });
-    
-    };
+        for (i=0; i < categorie.length; i++){
+            const button = document.createElement("button");
+            button.setAttribute("id","btn" + categorie[i].id);
+            button.innerHTML = categorie[i].name;
+            buttons.appendChild(button);
+            
+            button.addEventListener('click', function(event){
+                document.querySelector(".gallery").innerHTML='';
+                generateProjectFilter(event.target.id.slice(3));
+
+                for (let j = 0; j < allButtons.length; j++){
+                    allButtons[j].style.background = 'none';
+                    allButtons[j].style.color = '#1D6154';
+                }
+                
+                button.style.background = "#1D6154";
+                button.style.color = "white";                
+            });
+        };   
     };
     
     genererbouttons();
@@ -163,7 +174,6 @@ if(token !== null){
     const selectBody = document.querySelector("#index");
     const editBar = document.createElement("div");
     editBar.classList.add("edit_bar"); 
-    selectBody.appendChild(editBar);
     selectBody.insertBefore(editBar, selectBody.firstChild);
 
     const titleBar =document.createElement("div");
@@ -352,8 +362,8 @@ if(token !== null){
             const inputImage = document.querySelector('input[type="file"]');
             const preview = document.querySelector(".visualize_image");
 
-            let blob = '';
-            let fileName = '';
+            let blob = null;
+            let fileName = null;
 
             inputImage.addEventListener('change', function changepicture(){
                 const readFile = new FileReader();
@@ -376,38 +386,61 @@ if(token !== null){
                         console.log("filesize :", fileSize);
 
                         if((fileType === "image/png" && fileSize < 4194304) || (fileType === "image/jpeg" && fileSize < 4194304) || (fileType === "image/jpg" && fileSize < 4194304)){
-                        blob = new Blob([file], {type : fileType});
-                        console.log("blob :",blob);
-                        } else {
-                        alert("Type de fichier non valide");
-                        picture();
+                            blob = new Blob([file], {type : fileType});
+                            console.log("blob :",blob);
+                            const buttonSubmit = document.getElementById("submit_project");
+                            buttonSubmit.style.background = "#1D6154";
+                            buttonSubmit.addEventListener("mouseover", function(){
+                                buttonSubmit.style.background = "#0E2F28";
+                            })
+                            buttonSubmit.addEventListener("mouseout", function(){
+                                buttonSubmit.style.background = "#1D6154";
+                            })
+
+                        } else if(fileType !== ("image/png" || "image/jpeg" || "image/jpg")) {
+                            alert("Type de fichier non valide");
+                            picture();
+
+                        } else if(fileSize > 4194304){
+                            alert("Fichier trop volumineux");
+                            picture();
                         }
                 });
                 readFile.readAsDataURL(inputImage.files[0]);
             });
 
-
             // envoi du nouveau projet
+
             pictureBox.addEventListener('submit', async function send(event) {
                 event.preventDefault();
-              
-                let newProject = new FormData();
-                newProject.append("title", document.getElementById("title_picture").value);
-                newProject.append("image", blob, fileName);                
-                newProject.append("category", document.getElementById("category_picture").value);
 
-                // envoi des données vers le backend
+                const titlePicture = document.getElementById("title_picture").value;
+                const categoryPicture = document.getElementById("category_picture").value;
 
-                let sendData = await fetch('http://localhost:5678/api/works', {
-                    method: 'POST',
-                    body: newProject,
-                    headers : {
-                        'Authorization' : `Bearer ${token}` 
-                    }
-                });
-              
-                let result = await sendData.json();
+                if ((blob !== null) && (titlePicture.length !== 0)){
+                
+                    let newProject = new FormData();
+                    newProject.append("title", titlePicture);
+                    newProject.append("image", blob, fileName);                
+                    newProject.append("category", categoryPicture);
+
+                    // envoi des données vers le backend
+
+                    let sendData = await fetch('http://localhost:5678/api/works', {
+                        method: 'POST',
+                        body: newProject,
+                        headers : {
+                            'Authorization' : `Bearer ${token}` 
+                        }
+                    });
+                
+                    let result = await sendData.json();
+                } else {
+                    alert("Formulaire incomplet, veuillez le compléter avant l'envoi");
+                    picture();
+                }
             });
+
 
             // retour page édition
             const backButton = document.querySelector('.fa-arrow-left');

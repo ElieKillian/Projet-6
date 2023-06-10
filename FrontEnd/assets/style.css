@@ -48,10 +48,15 @@ table {
 }
 /** end reset css**/
 body {
-	max-width: 1140px;
+	/* max-width: 1140px; */
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+}
+.container{
+	max-width: 1140px;
+	margin-left : auto;
+	margin-right: auto;
 }
 header {
 	display: flex;
@@ -140,9 +145,15 @@ li:hover {
 	padding: 5px 10px;
 	cursor: pointer;
 }
-#btn-selected{
+
+#btn_selected{
 	background-color: #1D6154;
 	color: white;
+	box-sizing: border-box;
+	border: 1px solid #1D6154;
+	border-radius: 60px;
+	padding: 5px 10px;
+	cursor: pointer;
 }
 .gallery {
 	width: 100%;
@@ -161,7 +172,7 @@ li:hover {
 	margin: auto;
 }
 #login{
-	width: 50%;
+	width: 379px;
 	margin : 150px auto 355px auto;
 }
 #contact > *, #login > * {
@@ -200,6 +211,9 @@ input[type="submit"]{
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+}
+input[type="submit"]:hover{
+	background: #0E2F28;
 }
 
 .error_email, .error_pass{
@@ -392,6 +406,9 @@ h3{
 	background: #1D6154;
 	border-radius: 60px;
 	cursor: pointer;
+}
+.add_picture:hover{
+	background: #0E2F28;;
 }
 .remove_gallery p{
 	margin : 0px 200px;
