@@ -188,7 +188,6 @@ if(token !== null){
     editbar();
 
     // Ajout des boutons modifier 
-    // PREVOIR UN PARAMETRE POUR CETTE FONCTION !!!!
 
     function addModifyButton(){
 
@@ -484,13 +483,9 @@ document.getElementById('form_login').addEventListener('submit', async function(
         body: JSON.stringify(user)
     });
 
-    console.log("response:",response);
-
     // stockage des données renvoyées par le backend
         
     let result = await response.json();
-
-    console.log("result:",result)
 
     // communication des résultats à l'utilisateur
     // stockage du token et redirection si connexion réussie
@@ -498,7 +493,7 @@ document.getElementById('form_login').addEventListener('submit', async function(
     const errorMain = document.getElementById("form_login");
 
     if (result.error) {
-        //alert('Saisie invalide');
+        // Saisie invalide
         const resultError = document.getElementById("pass");
         resultError.style.border = "2px solid red";
         const errorPass = document.createElement("p");
@@ -508,7 +503,7 @@ document.getElementById('form_login').addEventListener('submit', async function(
         errorMain.insertBefore(errorPass, resultError);
         };
     if (result.message) {
-        //alert ('Utilisateur non trouvé');
+        // Utilisateur non trouvé
         const resultMessage = document.getElementById("email");
         resultMessage.style.border = "2px solid red";
         const errorMail = document.createElement("p");
@@ -518,7 +513,7 @@ document.getElementById('form_login').addEventListener('submit', async function(
         errorMain.insertBefore(errorMail, resultMessage);
         };
     if (result.userId) {
-        //alert ('Connexion réalisée avec succès, vous allez être redirigé vers la page d\'accueil');
+        // Connexion réussie
         localStorage.setItem('token', result.token);
         document.location.href="http://127.0.0.1:5500/FrontEnd/index.html"; 
     };
